@@ -15,8 +15,15 @@ const videoJsOptions = {
   ]
 };
 
-function App() {
-  return <VideoPlayer {...videoJsOptions} />;
+
+class App extends Component{
+
+  render(){
+    return(
+      <VideoPlayer {...videoJsOptions} />
+    )
+  }
 }
+
 
 export default App;
