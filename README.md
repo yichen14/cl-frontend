@@ -11,7 +11,7 @@
 
 ### TO-DO (Frontend):
 - [x] Handle MPEG-DASH Protocol
-- [ ] Integrate Snap-shot function
+- [x] Integrate Snap-shot function
 - [ ] Integrate Interactive Segmentation
 - [ ] Save annotated image to local disk
 - [ ] Send data to on-board computer
