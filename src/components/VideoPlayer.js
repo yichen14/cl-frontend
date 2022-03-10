@@ -15,7 +15,7 @@ export default class VideoPlayer extends React.Component {
   }
 
   componentDidMount() {
-    this.player = videojs(this.videoNode, this.props, function onPlayerReady() {
+    this.player = videojs(this.videoNode, this.props.videoJsOptions, function onPlayerReady() {
       console.log('onPlayerReady', this)
     });
   }
@@ -46,10 +46,18 @@ export default class VideoPlayer extends React.Component {
   }
 
   render() {
+    let button
+    const showButton = this.props.showButton;
+    if (showButton) {
+      button = <div style={{ padding: 20 }}><Button variant="primary" onClick={() => this.handelSnapshot()} onLoadedMetadata={this.handleMetadata}>Take Snapshot</Button> </div>
+    } else {
+      button = <></>;
+    }
     return (
       <div style={{}} >
         <div data-vjs-player>
           <video ref={ node => this.videoNode = node } className="video-js" ></video>
+          
         </div>
         <CaptureScreenshot
           captured={this.state.capture}
@@ -58,9 +66,7 @@ export default class VideoPlayer extends React.Component {
           resetCapture={this.resetCapture}
           addSnapshot={this.props.addSnapshot}
         />
-        <div style={{ padding: 20 }}>
-            <Button variant="primary" onClick={() => this.handelSnapshot()} onLoadedMetadata={this.handleMetadata}>Take Snapshot</Button>
-        </div>
+        {button}
         
       </div>
     )

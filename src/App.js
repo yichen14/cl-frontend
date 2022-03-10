@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import SnapshotList from './components/SnapshotList.js'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import { Container } from 'react-bootstrap';
+import { Container, Col, Row, Tab } from 'react-bootstrap';
 
 const videoJsOptions = {
   autoplay: false,
@@ -54,7 +54,16 @@ class App extends Component{
             </Nav>
             </Container>
         </Navbar>
-        <VideoPlayer {...videoJsOptions} addSnapshot={this.addSnapshot}/>
+        <Row>
+          <Col sm={6}>
+            <VideoPlayer videoJsOptions={videoJsOptions} addSnapshot={this.addSnapshot} showButton={true}/>
+          </Col>
+          <Col sm={6}>
+            <VideoPlayer videoJsOptions={videoJsOptions} addSnapshot={this.addSnapshot} showButton={false}/>
+          </Col>
+        </Row>
+        
+        
         <SnapshotList snapshots={snapshots}></SnapshotList>
       </div>
     )
