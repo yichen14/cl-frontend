@@ -1,7 +1,7 @@
 import React from 'react';
-
+import { ListGroup } from 'react-bootstrap';
 class SnapImage extends React.Component {
-    showImage(className){
+    /*showImage(className){
         const img = document.getElementsByClassName(className)
         //console.log(img[0].style.display)
         if(img[0].style.display === 'none'){
@@ -12,13 +12,12 @@ class SnapImage extends React.Component {
             //console.log(img.style.display)
             img[0].style.display = 'none'
         }
-    }
+    }*/
     render(){
         return (    
-            <li>
-                <a onClick={() => this.showImage(this.props.snapshot.name)} href="#">{this.props.snapshot.name}</a>
-                <img src={this.props.snapshot.image} style={{display:'none'}} className={this.props.snapshot.name}></img>
-            </li>
+            <ListGroup.Item>
+                <ListGroup.Item action href={'#'+this.props.snapshot.name}>{this.props.snapshot.name}</ListGroup.Item>
+            </ListGroup.Item>
         );
     }
 }

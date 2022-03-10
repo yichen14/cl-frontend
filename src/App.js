@@ -33,7 +33,7 @@ class App extends Component{
 
   addSnapshot(src){
     const info = {
-      name: "snapshot"+this.state.num,
+      name: "Snapshot"+this.state.num,
       image: src
     }
     this.setState({num: this.state.num+1})

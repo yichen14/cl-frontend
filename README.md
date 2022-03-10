@@ -5,6 +5,12 @@
 - Eason Lu 
 - Marc Huang
   
+### How to Start:
+run
+``` 
+npm start
+```
+
 ### Advisor:
 - Prof. Kris Hauser
 - Prof. Yuxiong Wang
