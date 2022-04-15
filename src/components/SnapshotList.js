@@ -1,10 +1,21 @@
 import React from 'react';
 import SnapImage from './SnapImage.js'
 import { ListGroup } from 'react-bootstrap';
-import { Tab, Row, Col } from 'react-bootstrap';
-
+import { Tab, Row, Col, ButtonGroup, ToggleButton } from 'react-bootstrap';
+import Canvas from './Canvas.js';
 class SnapshotList extends React.Component {
+    constructor(){
+        super();
+        this.state = {
+          isPostive: true
+        };
+    }
 
+    setClickLabel(value){
+        
+        this.setState({isPostive: value})
+        console.log(this.state.isPostive)
+    }
     render(){
         return ( 
         <div>
@@ -14,7 +25,7 @@ class SnapshotList extends React.Component {
                     <Col sm={4}>
                     <ListGroup>
                         {this.props.snapshots.map((snapshot) =>(
-                        <SnapImage key={snapshot.name} snapshot={snapshot}></SnapImage>
+                            <SnapImage key={snapshot.name} snapshot={snapshot}></SnapImage>
                         ))}
                     </ListGroup>
                     </Col>
@@ -22,10 +33,11 @@ class SnapshotList extends React.Component {
                     <Tab.Content>
                         {this.props.snapshots.map((snapshot) =>(
                             <Tab.Pane eventKey={'#'+snapshot.name}>
-                                <img src={snapshot.image}></img>
+                                <Canvas img={snapshot.image} name={snapshot.name} click_label={this.state.isPostive}></Canvas>
                             </Tab.Pane>
                         ))}
                     </Tab.Content>
+
                     </Col>
                 </Row>
             </Tab.Container>
