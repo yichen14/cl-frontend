@@ -1,5 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { Tab, Row, Col, ButtonGroup, ToggleButton, Button } from 'react-bootstrap';
+import axios from 'axios';
+
+let addImage = false
 
 function getCursorPosition(canvas, event, setX, setY) {
     const rect = canvas.getBoundingClientRect()
@@ -14,7 +17,28 @@ function getCursorPosition(canvas, event, setX, setY) {
 }
 
 function handelSendClick(x, y, isPostive){
+    if(addImage===false){
+        return 
+    }
+    
     console.log("x: " + x + " y: " + y + " label: " + isPostive)
+}
+
+function handelAddImage(img){
+    let formData = new FormData();
+    formData.append("file", img);
+    //console.log(formData.get('file'))
+    axios({
+        method: "post",
+        url: "http://127.0.0.1:5000/addimg",  
+        data: img,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        console.log(response.data)
+    });
+    
 }
 
 const Canvas = props => {
@@ -68,8 +92,10 @@ const Canvas = props => {
                 </ToggleButton>
             </ButtonGroup>
             <Button variant="primary" onClick={() => handelSendClick(x,y, isPostive)} style={{marginLeft:30}}>send click</Button>        
+            <Button variant="primary" onClick={() => handelAddImage(props.img)} style={{marginLeft:30}}>Add Image to annotation server</Button>     
+            
         </div>
-
+        <Button variant="primary"  style={{marginTop:30}}>Send Image to On-board Computer</Button>    
       </>
     
   ) 

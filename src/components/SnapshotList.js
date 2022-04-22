@@ -3,6 +3,7 @@ import SnapImage from './SnapImage.js'
 import { ListGroup } from 'react-bootstrap';
 import { Tab, Row, Col, ButtonGroup, ToggleButton } from 'react-bootstrap';
 import Canvas from './Canvas.js';
+import { Button } from 'bootstrap';
 class SnapshotList extends React.Component {
     constructor(){
         super();
@@ -12,7 +13,6 @@ class SnapshotList extends React.Component {
     }
 
     setClickLabel(value){
-        
         this.setState({isPostive: value})
         console.log(this.state.isPostive)
     }
@@ -34,6 +34,7 @@ class SnapshotList extends React.Component {
                         {this.props.snapshots.map((snapshot) =>(
                             <Tab.Pane eventKey={'#'+snapshot.name}>
                                 <Canvas img={snapshot.image} name={snapshot.name} click_label={this.state.isPostive}></Canvas>
+                                
                             </Tab.Pane>
                         ))}
                     </Tab.Content>
