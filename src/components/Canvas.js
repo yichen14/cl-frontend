@@ -17,10 +17,15 @@ function getCursorPosition(canvas, event, setX, setY) {
 }
 
 function handelSendClick(x, y, isPostive){
-    if(addImage===false){
+    if(addImage==false){
         return 
     }
-    
+    let recieved_img
+    axios.get('http://127.0.0.1:5000/getimg')
+    .then((response) => {
+        console.log(response);
+        recieved_img = atob(response.data["img"])
+    });
     console.log("x: " + x + " y: " + y + " label: " + isPostive)
 }
 
@@ -38,7 +43,7 @@ function handelAddImage(img){
       }).then(function (response) {
         console.log(response.data)
     });
-    
+    addImage = true
 }
 
 const Canvas = props => {
