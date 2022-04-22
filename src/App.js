@@ -6,14 +6,15 @@ import SnapshotList from './components/SnapshotList.js'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import { Container, Col, Row, Tab } from 'react-bootstrap';
-
+//https://dash.akamaized.net/dash264/TestCases/1b/qualcomm/1/MultiRatePatched.mpd
+//https://livesim.dashif.org/livesim/testpic_2s/Manifest.mpd
 const videoJsOptions = {
   autoplay: false,
   controls: true,
   sources: [
     {
       src:
-        "https://livesim.dashif.org/livesim/testpic_2s/Manifest.mpd",
+        "https://dash.akamaized.net/dash264/TestCases/1b/qualcomm/1/MultiRatePatched.mpd",
       type: "application/dash+xml"
     }
   ]

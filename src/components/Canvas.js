@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { Tab, Row, Col, ButtonGroup, ToggleButton, Button } from 'react-bootstrap';
 import axios from 'axios';
+import {Buffer} from 'buffer';
 
 let addImage = false
 
@@ -16,16 +17,37 @@ function getCursorPosition(canvas, event, setX, setY) {
     context.fillRect(x,y,3,3);
 }
 
-function handelSendClick(x, y, isPostive){
+function handelSendClick(x, y, isPostive, name, setImgsrc){
     if(addImage==false){
         return 
     }
-    let recieved_img
-    axios.get('http://127.0.0.1:5000/getimg')
-    .then((response) => {
-        console.log(response);
-        recieved_img = atob(response.data["img"])
+    var response_img
+    const json = JSON.stringify({
+        click:{
+            is_postive: isPostive,
+            coords_x: x,
+            coords_y: y
+        } 
     });
+    axios.post('http://127.0.0.1:5000/click', json, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        //console.log(`data:image/png;base64,${response.data["img"]}`)
+        
+        response_img = Buffer.from(response.data["img"], 'base64')
+        setImgsrc(`data:image/png;base64,${response.data["img"]}`)
+        // const res_img = document.createElement('img');
+        // res_img.setAttribute('crossOrigin', 'anonymous');
+        // res_img.src = `data:image/png;base64,${response.data["img"]}`
+        const show = document.getElementById("show");
+        const canvas = document.querySelector("#"+name);
+        const context = canvas.getContext('2d')
+        //context.fillRect(0, 0, 640, 360)
+        //context.drawImage(show, 0, 0, 640, 360);
+    })
+
     console.log("x: " + x + " y: " + y + " label: " + isPostive)
 }
 
@@ -50,7 +72,7 @@ const Canvas = props => {
   const [isPostive, setIsPostive] = useState(true);
   const [x, setX] = useState(0.0);
   const [y, setY] = useState(0.0);
-
+  const [imgsrc, setImgsrc] = useState(null);
   //const canvasRef = useRef(null)
   
   useEffect(() => {
@@ -76,8 +98,10 @@ const Canvas = props => {
       <>
         <div>
             <canvas id={props.name}/>
+            
         </div>
-        <div style={{display:'block'}}>
+        <img id="show" src={imgsrc}/>
+        <div style={{display:'block', marginTop:30}}>
             <ButtonGroup>
                 <ToggleButton
                     key = "positive"
@@ -96,7 +120,7 @@ const Canvas = props => {
                     Negative
                 </ToggleButton>
             </ButtonGroup>
-            <Button variant="primary" onClick={() => handelSendClick(x,y, isPostive)} style={{marginLeft:30}}>send click</Button>        
+            <Button variant="primary" onClick={() => handelSendClick(x,y, isPostive, props.name, setImgsrc)} style={{marginLeft:30}}>send click</Button>        
             <Button variant="primary" onClick={() => handelAddImage(props.img)} style={{marginLeft:30}}>Add Image to annotation server</Button>     
             
         </div>
