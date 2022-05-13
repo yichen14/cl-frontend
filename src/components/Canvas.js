@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Tab, Row, Col, ButtonGroup, ToggleButton, Button } from 'react-bootstrap';
+import { Tab, Row, Col, ButtonGroup, ToggleButton, Button, InputGroup, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 import {Buffer} from 'buffer';
 
@@ -68,11 +68,30 @@ function handelAddImage(img){
     addImage = true
 }
 
+function handleLabelChange(event, setLabel){
+    //console.log(event.target.value)
+    setLabel(event.target.value)
+}
+
+function handleStartTrain(mask_label){
+    console.log(mask_label)
+    const json = JSON.stringify({
+        label:mask_label
+    });
+    axios.post('http://127.0.0.1:5000/train', json, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        console.log(response)
+    })
+}
 const Canvas = props => {
   const [isPostive, setIsPostive] = useState(true);
   const [x, setX] = useState(0.0);
   const [y, setY] = useState(0.0);
   const [imgsrc, setImgsrc] = useState(null);
+  const [label, setLabel] = useState(null);
   //const canvasRef = useRef(null)
   
   useEffect(() => {
@@ -124,7 +143,17 @@ const Canvas = props => {
             <Button variant="primary" onClick={() => handelAddImage(props.img)} style={{marginLeft:30}}>Add Image to annotation server</Button>     
             
         </div>
-        <Button variant="primary"  style={{marginTop:30}}>Send Image to On-board Computer</Button>    
+        <Button variant="primary"  style={{marginTop:30}} onClick={() => handleStartTrain(label)}>Start Fine-tune model</Button>    
+        <InputGroup className="mb-3" style={{marginTop:30}}>
+            <InputGroup.Text id="basic-addon1">Label</InputGroup.Text>
+            <FormControl
+            placeholder="Cat"
+            aria-label="Cat"
+            aria-describedby="basic-addon1"
+            style={{maxWidth:300}}
+            onChange={(event) => handleLabelChange(event, setLabel)}
+            />
+        </InputGroup>
       </>
     
   ) 
