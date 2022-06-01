@@ -138,7 +138,7 @@ const Canvas = props => {
             <ButtonGroup style={{marginLeft:40}}>
                 <ToggleButton
                     key = "positive"
-                    checked={is_postive === true}
+                    checked={isPostive === true}
                     variant={'outline-success'}
                     onClick={() => handleDrawClick(setIsPostive, true)}
                 >
@@ -146,10 +146,10 @@ const Canvas = props => {
                 </ToggleButton>
                 <ToggleButton
                     key = "negative"
-                    checked={is_postive === false}
+                    checked={isPostive === false}
                     variant={'outline-danger'}
                     onClick={() => handleDrawClick(setIsPostive, false)}
-
+                    
                 >
                     Negative
                 </ToggleButton>
