@@ -60,7 +60,8 @@ class App extends Component{
             <VideoPlayer videoJsOptions={videoJsOptions} addSnapshot={this.addSnapshot} showButton={true}/>
           </Col>
           <Col sm={6}>
-            <VideoPlayer videoJsOptions={videoJsOptions} addSnapshot={this.addSnapshot} showButton={false}/>
+            {/* <VideoPlayer videoJsOptions={videoJsOptions} addSnapshot={this.addSnapshot} showButton={false}/> */}
+            <img src="http://127.0.0.1:7000/camera" width="100%"></img>
           </Col>
         </Row>
         

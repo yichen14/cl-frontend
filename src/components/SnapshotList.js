@@ -7,15 +7,8 @@ import { Button } from 'bootstrap';
 class SnapshotList extends React.Component {
     constructor(){
         super();
-        this.state = {
-          isPostive: true
-        };
     }
 
-    setClickLabel(value){
-        this.setState({isPostive: value})
-        console.log(this.state.isPostive)
-    }
     render(){
         return ( 
         <div>
@@ -33,7 +26,7 @@ class SnapshotList extends React.Component {
                     <Tab.Content>
                         {this.props.snapshots.map((snapshot) =>(
                             <Tab.Pane eventKey={'#'+snapshot.name}>
-                                <Canvas img={snapshot.image} name={snapshot.name} click_label={this.state.isPostive}></Canvas>
+                                <Canvas img={snapshot.image} name={snapshot.name} ></Canvas>
                                 
                             </Tab.Pane>
                         ))}

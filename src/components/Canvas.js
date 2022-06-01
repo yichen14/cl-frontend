@@ -2,25 +2,38 @@ import React, { useRef, useEffect, useState } from 'react'
 import { Tab, Row, Col, ButtonGroup, ToggleButton, Button, InputGroup, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 import {Buffer} from 'buffer';
+import '../css/annotator.css'
 
 let addImage = false
+let is_postive = true
+let click_x = -1.0
+let click_y = -1.0
 
-function getCursorPosition(canvas, event, setX, setY) {
+
+function getCursorPosition(canvas, event) {
+    
     const rect = canvas.getBoundingClientRect()
-    const x = parseInt(event.clientX - rect.left)
-    const y = parseInt(event.clientY - rect.top)
-    setX(x)
-    setY(y)
-    console.log("x: " + x + " y: " + y)
+    click_x = parseInt(event.clientX - rect.left)
+    click_y = parseInt(event.clientY - rect.top)
+
+    console.log("x: " + click_x + " y: " + click_y)
 
     const context = canvas.getContext('2d')
-    context.fillRect(x,y,3,3);
+    context.fillStyle = "#00FF00";
+    if (!is_postive){
+        context.fillStyle = "#FF0000";
+    }
+
+    context.beginPath();
+    context.arc(click_x, click_y, 3, 0, 2 * Math.PI);
+    context.fill();
 }
 
 function handelSendClick(x, y, isPostive, name, setImgsrc){
-    if(addImage==false){
+    if(addImage===false){
         return 
     }
+    if(x < 0 || y < 0) return
     var response_img
     const json = JSON.stringify({
         click:{
@@ -34,21 +47,13 @@ function handelSendClick(x, y, isPostive, name, setImgsrc){
             'Content-Type': 'application/json'
         }
     }).then(function (response) {
-        //console.log(`data:image/png;base64,${response.data["img"]}`)
         
         response_img = Buffer.from(response.data["img"], 'base64')
         setImgsrc(`data:image/png;base64,${response.data["img"]}`)
-        // const res_img = document.createElement('img');
-        // res_img.setAttribute('crossOrigin', 'anonymous');
-        // res_img.src = `data:image/png;base64,${response.data["img"]}`
-        const show = document.getElementById("show");
-        const canvas = document.querySelector("#"+name);
-        const context = canvas.getContext('2d')
-        //context.fillRect(0, 0, 640, 360)
-        //context.drawImage(show, 0, 0, 640, 360);
+        console.log("x: " + x + " y: " + y + " label: " + isPostive)
     })
 
-    console.log("x: " + x + " y: " + y + " label: " + isPostive)
+    
 }
 
 function handelAddImage(img){
@@ -69,7 +74,6 @@ function handelAddImage(img){
 }
 
 function handleLabelChange(event, setLabel){
-    //console.log(event.target.value)
     setLabel(event.target.value)
 }
 
@@ -86,18 +90,23 @@ function handleStartTrain(mask_label){
         console.log(response)
     })
 }
+
+function handleDrawClick(setIsPostive, value){
+    setIsPostive(value)
+    is_postive = value
+}
+
 const Canvas = props => {
   const [isPostive, setIsPostive] = useState(true);
-  const [x, setX] = useState(0.0);
-  const [y, setY] = useState(0.0);
   const [imgsrc, setImgsrc] = useState(null);
   const [label, setLabel] = useState(null);
-  //const canvasRef = useRef(null)
   
   useEffect(() => {
+    handelAddImage(props.img)
     const img = document.createElement('img');
     img.setAttribute('crossOrigin', 'anonymous');
     img.setAttribute('src', props.img);
+    setImgsrc(props.img)
     const canvas = document.querySelector("#"+props.name);
     if (canvas){
         //console.log(props.name)
@@ -105,52 +114,56 @@ const Canvas = props => {
         canvas.height = 360
         const context = canvas.getContext('2d')
 
-        context.fillRect(0, 0, 640, 360)
-        context.drawImage(img, 0, 0, 640, 360);
+        context.clearRect(0, 0, 640, 360)
+        // context.drawImage(img, 0, 0, 640, 360);
         canvas.addEventListener('mousedown', function(e) {
-            getCursorPosition(canvas, e, setX, setY)
+            getCursorPosition(canvas, e)
+            console.log("x: " + click_x + " y: " + click_y + " label: " + is_postive)
+            handelSendClick(click_x,click_y, is_postive, props.name, setImgsrc)
         })
     }
   }, [])
   
   return(
       <>
-        <div>
-            <canvas id={props.name}/>
-            
+        <div class="outsideWrapper">
+            <div class="insideWrapper">
+                <img id="show" src={imgsrc} class="coveredImage"/>
+                <canvas id={props.name} class="coveringCanvas"/>
+                
+            </div>
         </div>
-        <img id="show" src={imgsrc}/>
+        
         <div style={{display:'block', marginTop:30}}>
-            <ButtonGroup>
+            <ButtonGroup style={{marginLeft:40}}>
                 <ToggleButton
                     key = "positive"
-                    checked={isPostive === true}
-                    variant={'outline-danger'}
-                    onClick={() => setIsPostive(true)}
+                    checked={is_postive === true}
+                    variant={'outline-success'}
+                    onClick={() => handleDrawClick(setIsPostive, true)}
                 >
                     Postive
                 </ToggleButton>
                 <ToggleButton
                     key = "negative"
-                    checked={isPostive === false}
-                    variant={'outline-success'}
-                    onClick={() => setIsPostive(false)}
+                    checked={is_postive === false}
+                    variant={'outline-danger'}
+                    onClick={() => handleDrawClick(setIsPostive, false)}
+
                 >
                     Negative
                 </ToggleButton>
             </ButtonGroup>
-            <Button variant="primary" onClick={() => handelSendClick(x,y, isPostive, props.name, setImgsrc)} style={{marginLeft:30}}>send click</Button>        
-            <Button variant="primary" onClick={() => handelAddImage(props.img)} style={{marginLeft:30}}>Add Image to annotation server</Button>     
-            
+            {/* <Button variant="primary" onClick={() => handelSendClick(x,y, isPostive, props.name, setImgsrc)} style={{marginLeft:30}}>send click</Button>         */}
+            {/* <Button variant="primary" onClick={() => handelAddImage(props.img)} style={{marginLeft:30}}>Add Image to annotation server</Button>      */}
+            <Button variant="primary"  style={{marginLeft:30}} onClick={() => handleStartTrain(label)}>Start fine-tune model</Button>
         </div>
-        <Button variant="primary"  style={{marginTop:30}} onClick={() => handleStartTrain(label)}>Start Fine-tune model</Button>    
-        <InputGroup className="mb-3" style={{marginTop:30}}>
+            
+        <InputGroup className="mb-3" style={{marginTop:30,marginLeft:40}}>
             <InputGroup.Text id="basic-addon1">Label</InputGroup.Text>
             <FormControl
-            placeholder="Cat"
-            aria-label="Cat"
             aria-describedby="basic-addon1"
-            style={{maxWidth:300}}
+            style={{maxWidth:330}}
             onChange={(event) => handleLabelChange(event, setLabel)}
             />
         </InputGroup>
