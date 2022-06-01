@@ -3,11 +3,12 @@
 ### Team Member:
 - Roger Qiu
 - Eason Lu 
-- Marc Huang
-  
+
+
 ### How to Start:
 run
 ``` 
+npm install
 npm start
 ```
 
@@ -18,10 +19,10 @@ npm start
 ### TO-DO (Frontend):
 - [x] Handle MPEG-DASH Protocol
 - [x] Integrate Snap-shot function
-- [ ] Integrate Interactive Segmentation
-- [ ] Save annotated image to local disk
-- [ ] Send data to on-board computer
-- [ ] Adjust styles
+- [x] Integrate Interactive Segmentation
+- [x] Save annotated image to local disk
+- [x] Send data to on-board computer
+- [x] Adjust styles
 
 ### System Structure:
 ![image](./implementation%20sektch%20-%20MVP.png)
