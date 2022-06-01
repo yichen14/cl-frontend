@@ -1,4 +1,4 @@
-# Few-Shot Continuall Learning System for Robot Semantic Segmentation
+# Few-Shot Continuall Learning System for Robot Semantic Segmentation - Front End Part
 
 ### Team Member:
 - Roger Qiu
