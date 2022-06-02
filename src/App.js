@@ -6,8 +6,7 @@ import SnapshotList from './components/SnapshotList.js'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import { Container, Col, Row, Tab } from 'react-bootstrap';
-//https://dash.akamaized.net/dash264/TestCases/1b/qualcomm/1/MultiRatePatched.mpd
-//https://livesim.dashif.org/livesim/testpic_2s/Manifest.mpd
+
 const videoJsOptions = {
   autoplay: false,
   controls: true,
@@ -60,8 +59,7 @@ class App extends Component{
             <VideoPlayer videoJsOptions={videoJsOptions} addSnapshot={this.addSnapshot} showButton={true}/>
           </Col>
           <Col sm={6}>
-            {/* <VideoPlayer videoJsOptions={videoJsOptions} addSnapshot={this.addSnapshot} showButton={false}/> */}
-            <img src="http://127.0.0.1:7000/camera" width="100%"></img>
+            <img src="http://127.0.0.1:7000/camera" width="640px" height="360px" ></img>
           </Col>
         </Row>
         

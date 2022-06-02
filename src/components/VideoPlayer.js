@@ -1,71 +1,41 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import videojs from 'video.js'
-import VideoSnapshot from 'video-snapshot';
-import CaptureScreenshot from './VideoCapture';
+import axios from 'axios';
 
 export default class VideoPlayer extends React.Component {
   constructor(){
     super();
     this.state = {
       capture: false,
-      videoWidth: 640,
-      videoHeight: 360
+      videoWidth: 1280,
+      videoHeight: 720
     };
-  }
-
-  componentDidMount() {
-    this.player = videojs(this.videoNode, this.props.videoJsOptions, function onPlayerReady() {
-      console.log('onPlayerReady', this)
-    });
-  }
-
-  componentWillUnmount() {
-    if (this.player) {
-      this.player.dispose()
-    }
   }
 
   handelSnapshot(){
       console.log("I want to take a snapshot!")
-      this.setState({capture:true})
+      axios.get(`http://127.0.0.1:7000/snapshot`)
+      .then(res => {
+        this.props.addSnapshot(`data:image/png;base64,${res.data["img"]}`)
+      })
   }
 
   resetCapture = () => this.setState({ capture: false });
-
-  handleMetadata = () => {
-      const video = document.querySelector('video');
-      console.log("handle meta data")
-      if (video) {
-        this.setState({
-          videoWidth: video.videoWidth,
-          videoHeight: video.videoHeight
-        });
-      console.log(this.state.videoHeight)
-      }
-  }
 
   render() {
     let button
     const showButton = this.props.showButton;
     if (showButton) {
-      button = <div style={{ padding: 20 }}><Button variant="primary" onClick={() => this.handelSnapshot()} onLoadedMetadata={this.handleMetadata}>Take Snapshot</Button> </div>
+      button = <div style={{ padding: 20 }}><Button variant="primary" onClick={() => this.handelSnapshot()}>Take Snapshot</Button> </div>
     } else {
       button = <></>;
     }
     return (
       <div style={{}} >
-        <div data-vjs-player>
-          <video ref={ node => this.videoNode = node } className="video-js" ></video>
-          
+        <div id="view_div">
+          {/* <video ref={ node => this.videoNode = node } className="video-js" ></video> */}
+          <img src="http://127.0.0.1:7000/camera" width="640px" height="360px" id="view"></img>
         </div>
-        <CaptureScreenshot
-          captured={this.state.capture}
-          videoWidth={this.state.videoWidth}
-          videoHeight={this.state.videoHeight}
-          resetCapture={this.resetCapture}
-          addSnapshot={this.props.addSnapshot}
-        />
         {button}
         
       </div>

@@ -59,7 +59,6 @@ function handelSendClick(x, y, isPostive, name, setImgsrc){
 function handelAddImage(img){
     let formData = new FormData();
     formData.append("file", img);
-    //console.log(formData.get('file'))
     axios({
         method: "post",
         url: "http://127.0.0.1:5000/addimg",  
@@ -109,13 +108,11 @@ const Canvas = props => {
     setImgsrc(props.img)
     const canvas = document.querySelector("#"+props.name);
     if (canvas){
-        //console.log(props.name)
-        canvas.width = 640
-        canvas.height = 360
+        canvas.width = 1280
+        canvas.height = 720
         const context = canvas.getContext('2d')
 
-        context.clearRect(0, 0, 640, 360)
-        // context.drawImage(img, 0, 0, 640, 360);
+        context.clearRect(0, 0, 1280, 720)
         canvas.addEventListener('mousedown', function(e) {
             getCursorPosition(canvas, e)
             console.log("x: " + click_x + " y: " + click_y + " label: " + is_postive)
@@ -149,13 +146,10 @@ const Canvas = props => {
                     checked={isPostive === false}
                     variant={'outline-danger'}
                     onClick={() => handleDrawClick(setIsPostive, false)}
-                    
                 >
                     Negative
                 </ToggleButton>
             </ButtonGroup>
-            {/* <Button variant="primary" onClick={() => handelSendClick(x,y, isPostive, props.name, setImgsrc)} style={{marginLeft:30}}>send click</Button>         */}
-            {/* <Button variant="primary" onClick={() => handelAddImage(props.img)} style={{marginLeft:30}}>Add Image to annotation server</Button>      */}
             <Button variant="primary"  style={{marginLeft:30}} onClick={() => handleStartTrain(label)}>Start fine-tune model</Button>
         </div>
             
