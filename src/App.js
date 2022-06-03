@@ -6,6 +6,7 @@ import SnapshotList from './components/SnapshotList.js'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import { Container, Col, Row, Tab } from 'react-bootstrap';
+import {IMG_HEIGHT, IMG_WIDTH} from './components/constants';
 
 const videoJsOptions = {
   autoplay: false,
@@ -18,7 +19,6 @@ const videoJsOptions = {
     }
   ]
 };
-
 
 class App extends Component{
 
@@ -56,10 +56,10 @@ class App extends Component{
         </Navbar>
         <Row>
           <Col sm={6}>
-            <VideoPlayer videoJsOptions={videoJsOptions} addSnapshot={this.addSnapshot} showButton={true}/>
+            <VideoPlayer videoJsOptions={videoJsOptions} addSnapshot={this.addSnapshot} showButton={true} />
           </Col>
           <Col sm={6}>
-            <img src="http://127.0.0.1:7000/camera" width="640px" height="360px" ></img>
+            {/* <img src="http://127.0.0.1:7000/pred_cam" width="640px" height="360px" ></img> */}
           </Col>
         </Row>
         

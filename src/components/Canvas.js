@@ -3,6 +3,7 @@ import { Tab, Row, Col, ButtonGroup, ToggleButton, Button, InputGroup, FormContr
 import axios from 'axios';
 import {Buffer} from 'buffer';
 import '../css/annotator.css'
+import {IMG_HEIGHT, IMG_WIDTH} from './constants';
 
 let addImage = false
 let is_postive = true
@@ -108,11 +109,11 @@ const Canvas = props => {
     setImgsrc(props.img)
     const canvas = document.querySelector("#"+props.name);
     if (canvas){
-        canvas.width = 1280
-        canvas.height = 720
+        canvas.width = IMG_WIDTH
+        canvas.height = IMG_HEIGHT
         const context = canvas.getContext('2d')
 
-        context.clearRect(0, 0, 1280, 720)
+        context.clearRect(0, 0, IMG_WIDTH, IMG_HEIGHT)
         canvas.addEventListener('mousedown', function(e) {
             getCursorPosition(canvas, e)
             console.log("x: " + click_x + " y: " + click_y + " label: " + is_postive)
@@ -123,7 +124,7 @@ const Canvas = props => {
   
   return(
       <>
-        <div class="outsideWrapper">
+        <div class="outsideWrapper" width={IMG_WIDTH.toString()+"px"} height={IMG_HEIGHT.toString()+"px"}>
             <div class="insideWrapper">
                 <img id="show" src={imgsrc} class="coveredImage"/>
                 <canvas id={props.name} class="coveringCanvas"/>

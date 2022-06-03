@@ -1,14 +1,15 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import {IMG_HEIGHT, IMG_WIDTH} from './constants';
 
 export default class VideoPlayer extends React.Component {
   constructor(){
     super();
     this.state = {
       capture: false,
-      videoWidth: 1280,
-      videoHeight: 720
+      videoWidth: IMG_WIDTH,
+      videoHeight: IMG_HEIGHT
     };
   }
 
@@ -33,8 +34,7 @@ export default class VideoPlayer extends React.Component {
     return (
       <div style={{}} >
         <div id="view_div">
-          {/* <video ref={ node => this.videoNode = node } className="video-js" ></video> */}
-          <img src="http://127.0.0.1:7000/camera" width="640px" height="360px" id="view"></img>
+          <img src="http://127.0.0.1:7000/pred_cam" width="1280px" height="720px"  id="view"></img>
         </div>
         {button}
         
