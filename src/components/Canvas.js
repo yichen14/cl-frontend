@@ -43,7 +43,7 @@ function handelSendClick(x, y, isPostive, name, setImgsrc){
             coords_y: y
         } 
     });
-    axios.post('http://127.0.0.1:5000/click', json, {
+    axios.post('http://127.0.0.1:7000/click', json, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -51,7 +51,8 @@ function handelSendClick(x, y, isPostive, name, setImgsrc){
         
         response_img = Buffer.from(response.data["img"], 'base64')
         setImgsrc(`data:image/png;base64,${response.data["img"]}`)
-        console.log("x: " + x + " y: " + y + " label: " + isPostive)
+        // console.log(response)
+        // console.log("x: " + x + " y: " + y + " label: " + isPostive)
     })
 
     
@@ -62,7 +63,7 @@ function handelAddImage(img){
     formData.append("file", img);
     axios({
         method: "post",
-        url: "http://127.0.0.1:5000/addimg",  
+        url: "http://127.0.0.1:7000/addimg",  
         data: img,
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -82,7 +83,7 @@ function handleStartTrain(mask_label){
     const json = JSON.stringify({
         label:mask_label
     });
-    axios.post('http://127.0.0.1:5000/train', json, {
+    axios.post('http://127.0.0.1:7000/train', json, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -151,7 +152,7 @@ const Canvas = props => {
                     Negative
                 </ToggleButton>
             </ButtonGroup>
-            <Button variant="primary"  style={{marginLeft:30}} onClick={() => handleStartTrain(label)}>Start fine-tune model</Button>
+            <Button variant="primary"  style={{marginLeft:30}} onClick={() => handleStartTrain(label)}>Start Novel Adaptation</Button>
         </div>
             
         <InputGroup className="mb-3" style={{marginTop:30,marginLeft:40}}>
